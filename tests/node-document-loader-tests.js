@@ -91,7 +91,6 @@ describe('For the node.js document loader', function() {
       assert.throws(
         jsonld.useDocumentLoader.bind(jsonld, documentLoaderType, options),
         function(err) {
-          console.log('errpr', err);
           assert.ok(
             err instanceof RangeError, 'A range error should be thrown');
           assert.equal(err.message, expectedMessage);
