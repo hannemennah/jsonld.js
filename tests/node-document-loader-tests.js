@@ -5,6 +5,9 @@
  */
 const jsonld = require('..');
 const assert = require('assert');
+const request = require('request');
+const sinon = require('sinon');
+const mockRequest = sinon.mock(request);
 
 describe('For the node.js document loader', function() {
   const documentLoaderType = 'node';
@@ -16,9 +19,25 @@ describe('For the node.js document loader', function() {
 
   describe('When built with no options specified', function() {
     it('loading should work', function(done) {
+      const schemaUrl = 'https://schema.org';
+      const mock = mockRequest
+        .expects('Request')
+        .withArgs({
+          url: schemaUrl,
+          headers: sinon.match.object,
+          strictSSL: true,
+          followRedirect: false,
+          callback: sinon.match.any
+        })
+        .once()
+        .callsFake(({callback, headers}) => {
+          callback(null, {headers}, {'@context': {}});
+        });
       jsonld.useDocumentLoader(documentLoaderType);
-      jsonld.expand('http://schema.org/', function(err, expanded) {
+      jsonld.expand(schemaUrl, function(err, expanded) {
         assert.ifError(err);
+        assert.deepEqual(expanded, []);
+        mock.verify();
         done();
       });
     });

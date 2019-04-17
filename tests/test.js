@@ -144,3 +144,16 @@ common(options).then(() => {
 process.on('unhandledRejection', (reason, p) => {
   console.error('Unhandled Rejection at:', p, 'reason:', reason);
 });
+
+// remove test data
+//
+const http = require('http');
+// store a reference to the original request function
+const originalRequest = http.request;
+// // override the function
+http.request = function wrapMethodRequest(req) {
+  console.warn('REAL HTTP CALL MADE TO', req.host);
+  // do something with the req here
+  // call the original 'request' function
+  return originalRequest.apply(this, arguments);
+};
