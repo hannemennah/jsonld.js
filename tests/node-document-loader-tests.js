@@ -86,11 +86,12 @@ describe('For the node.js document loader', function() {
 
     it('constructing the document loader should fail', function(done) {
       const expectedMessage =
-        'Accept header may not be specified as an option; ' +
+        'Accept header may not be specified; ' +
         'only "application/ld+json, application/json" is supported.';
       assert.throws(
         jsonld.useDocumentLoader.bind(jsonld, documentLoaderType, options),
         function(err) {
+          console.log('errpr', err);
           assert.ok(
             err instanceof RangeError, 'A range error should be thrown');
           assert.equal(err.message, expectedMessage);
