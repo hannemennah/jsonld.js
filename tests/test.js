@@ -96,7 +96,7 @@ if(process.env.JSONLD_TESTS) {
   entries.push(path.resolve(_top, 'tests/graph-container.js'));
   entries.push(path.resolve(_top, 'tests/new-embed-api'));
   // TODO: avoid network traffic and re-enable
-  //entries.push(path.resolve(_top, 'tests/node-document-loader-tests.js'));
+  entries.push(path.resolve(_top, 'tests/node-document-loader-tests.js'));
 }
 
 let benchmark = null;
