@@ -41,6 +41,30 @@ describe('For the node.js document loader', function() {
         done();
       });
     });
+    it('loading should fail', function(done) {
+      const schemaUrl = 'https://google.com/dfsdfsdfs';
+      const mock = mockRequest
+        .expects('Request')
+        .withArgs({
+          url: schemaUrl,
+          headers: sinon.match.object,
+          strictSSL: true,
+          followRedirect: false,
+          callback: sinon.match.any
+        })
+        .once()
+        .callsFake(({callback, headers}) => {
+          callback(null, {headers}, {'@context': {'id': 'test'}});
+        });
+      jsonld.useDocumentLoader(documentLoaderType);
+      jsonld.expand(schemaUrl, function(err, expanded) {
+        assert.ifError(err);
+        assert.deepEqual(expanded, []);
+        mock.verify();
+        done();
+      });
+    });
+
   });
 
   describe('When built with no explicit headers', function() {
