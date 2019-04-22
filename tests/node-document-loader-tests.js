@@ -31,7 +31,7 @@ describe('For the node.js document loader', function() {
         })
         .once()
         .callsFake(({callback, headers}) => {
-          callback(null, {headers}, {});
+          callback(null, {headers}, {'@context': {}});
         });
       jsonld.useDocumentLoader(documentLoaderType);
       jsonld.expand(schemaUrl, function(err, expanded) {
