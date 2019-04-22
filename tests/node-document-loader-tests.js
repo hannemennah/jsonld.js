@@ -31,7 +31,7 @@ describe('For the node.js document loader', function() {
         })
         .once()
         .callsFake(({callback, headers}) => {
-          callback(null, {headers}, {'@context': {}});
+          callback(null, {headers}, {});
         });
       jsonld.useDocumentLoader(documentLoaderType);
       jsonld.expand(schemaUrl, function(err, expanded) {
@@ -54,12 +54,12 @@ describe('For the node.js document loader', function() {
         })
         .once()
         .callsFake(({callback, headers}) => {
-          callback(null, {headers}, {'@context': {'id': 'test'}});
+          callback(null, {headers}, {'@context': {id: 'test'}});
         });
       jsonld.useDocumentLoader(documentLoaderType);
       jsonld.expand(schemaUrl, function(err, expanded) {
-        assert.ifError(err);
-        assert.deepEqual(expanded, []);
+        assert.ok(err, 'Expected an error');
+        assert.equal(expanded, undefined);
         mock.verify();
         done();
       });
